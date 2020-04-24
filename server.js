@@ -1,9 +1,9 @@
-/* eslint consistent-return: 0 */ // --> OFF
-// to allow for reused server variable
+/* eslint consistent-return: 0 */ // --> OFF // to allow for reused server variable
 
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 const { PORT, DATABASE_URL } = require('./config');
 
@@ -12,6 +12,11 @@ const app = express();
 // puts form data on req.body
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+const { localStrategy } = require('./auth/strategies');
+
+passport.use(localStrategy);
+const { router: authRouter } = require('./auth/routes');
 
 const mongooseOptions = { // fight deprecations
   useNewUrlParser: true,
@@ -32,6 +37,7 @@ app.use((req, res, next) => {
 
 app.use(express.static('public'));
 
+app.use('/api/auth', authRouter);
 app.use('*', (req, res) => res.status(404).json({ message: 'Not Found' }));
 
 // Referenced by both runServer and closeServer. closeServer
