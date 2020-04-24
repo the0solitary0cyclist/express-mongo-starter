@@ -1,0 +1,23 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true
+},
+"plugins": [
+  "mocha"
+],
+"extends": [
+    "airbnb-base",
+    "plugin:mocha/recommended"
+],
+"rules": {
+    "space-before-function-paren": ["error", "never"],
+    "mocha/no-exclusive-tests": "warn", // prevent.only mishaps
+    "mocha/no-mocha-arrows": 1,
+    "mocha/no-skipped-tests": 0,
+    "mocha/no-hooks-for-single-case": 0
+  }
+}
+
+
+
