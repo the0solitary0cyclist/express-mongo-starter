@@ -17,6 +17,7 @@ const { localStrategy } = require('./auth/strategies');
 
 passport.use(localStrategy);
 const { router: authRouter } = require('./auth/routes');
+const { router: usersRouter } = require('./users/routes');
 
 const mongooseOptions = { // fight deprecations
   useNewUrlParser: true,
@@ -38,6 +39,8 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 
 app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
+
 app.use('*', (req, res) => res.status(404).json({ message: 'Not Found' }));
 
 // Referenced by both runServer and closeServer. closeServer
