@@ -13,9 +13,9 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const { localStrategy } = require('./auth/strategies');
+const { localStrategy, jwtStrategy } = require('./auth/strategies');
 
-passport.use(localStrategy);
+passport.use(localStrategy, jwtStrategy);
 const { router: authRouter } = require('./auth/routes');
 const { router: usersRouter } = require('./users/routes');
 
@@ -37,6 +37,11 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static('public'));
+
+// Authentication 
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);

@@ -22,8 +22,8 @@ function watchLoginForm() {
       .then( ( res ) => res.json() )
       .then( ( data ) => {
         if ( data.success ) {
-          localStorage.email = data.user.email;
-          window.location = "notYetProtected.html";
+          localStorage.authToken = data.authToken;
+          window.location = "profile.html";
         } else {
           $( "#error-msg" ).show();
           $( "#error-msg" ).append( data.message );

@@ -1,8 +1,10 @@
 
 // to handle reject with a reason and not just throw an error
 /* eslint prefer-promise-reject-errors: 0 */ // --> OFF
-
+'use strict';
 const { Strategy: LocalStrategy } = require('passport-local');
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
+const { JWT_SECRET } = require('../config');
 
 const { User } = require('../users/models');
 
@@ -31,4 +33,17 @@ const localStrategy = new LocalStrategy({
     .catch((err) => callback(err, false));
 });
 
-module.exports = { localStrategy };
+const jwtStrategy = new JwtStrategy(
+  {
+    secretOrKey: JWT_SECRET,
+    // Look for the JWT as a Bearer auth header
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
+    // Only allow HS256 tokens - the same as the ones we issue
+    algorithms: ['HS256']
+  },
+  (payload, done) => {
+    done(null, payload.user);
+  }
+);
+
+module.exports = { localStrategy, jwtStrategy };
