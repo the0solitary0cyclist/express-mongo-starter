@@ -15,22 +15,20 @@ const localStrategy = new LocalStrategy({
     .then((_user) => {
       user = _user;
       if (!user) {
-        // Return a rejected promise so we break out of the chain of .thens.
-        // Any errors like this will be handled in the catch block.
-        return Promise.reject({
-          reason: 'LoginError',
-          message: 'Incorrect email or password',
-        });
+        return Promise.reject(new Error('Email not found. Please register.'));
+        // no, do not add a catch here because if you do it will proceed to .then
+        // and then for all bad creds you get TWO error messages
       }
-      return user;
+
+      return user.validatePassword(password);
     })
-    .then((validUser) => callback(null, validUser))
-    .catch((err) => {
-      if (err.reason === 'LoginError') {
-        return callback(null, false, err);
+    .then((isValid) => {
+      if (!isValid) {
+        return Promise.reject(new Error('Incorrect password.'));
       }
-      return callback(err, false);
-    });
+      return callback(null, user);
+    })
+    .catch((err) => callback(err, false));
 });
 
 module.exports = { localStrategy };

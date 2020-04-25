@@ -1,6 +1,11 @@
+function clearErrors() {
+  $( "#error-msg" ).empty();
+}
+
 function watchLoginForm() {
   $( "#login-form" ).on( "submit", ( event ) => {
     event.preventDefault();
+    clearErrors();
     const email = $( "#email" ).val();
     const password = $( "#password" ).val();
     fetch( "/api/auth/login", {
@@ -12,16 +17,23 @@ function watchLoginForm() {
         email,
         password
       } )
-    } ) // /api/auth/login returns contents of req.user
-      .then( ( response ) => response.json() )
+    } )
+
+      .then( ( res ) => res.json() )
       .then( ( data ) => {
-        localStorage.email = data.email;
-        window.location = "notYetProtected.html";
+        if ( data.success ) {
+          localStorage.email = data.user.email;
+          window.location = "notYetProtected.html";
+        } else {
+          $( "#error-msg" ).show();
+          $( "#error-msg" ).append( data.message );
+        }
       } );
   } );
 }
 
 function handleLoginPage() {
+  $( "#error-msg" ).hide();
   watchLoginForm();
 }
 
