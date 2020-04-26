@@ -23,13 +23,11 @@ function watchRegisterForm() {
 
       .then( ( res ) => res.json() )
       .then( ( data ) => {
-        console.log( data );
-        if (data.reason == 'ValidationError') {
+        if ( data.reason == "ValidationError" ) {
           $( "#error-msg" ).show();
           $( "#error-msg" ).append( data.message );
-        }
-        else {
-          window.location = '/'
+        } else {
+          window.location = "/";
         }
       } );
   } );

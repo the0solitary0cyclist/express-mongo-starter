@@ -1,7 +1,8 @@
 
 // to handle reject with a reason and not just throw an error
 /* eslint prefer-promise-reject-errors: 0 */ // --> OFF
-'use strict';
+
+
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const { JWT_SECRET } = require('../config');
@@ -39,11 +40,11 @@ const jwtStrategy = new JwtStrategy(
     // Look for the JWT as a Bearer auth header
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
     // Only allow HS256 tokens - the same as the ones we issue
-    algorithms: ['HS256']
+    algorithms: ['HS256'],
   },
   (payload, done) => {
     done(null, payload.user);
-  }
+  },
 );
 
 module.exports = { localStrategy, jwtStrategy };

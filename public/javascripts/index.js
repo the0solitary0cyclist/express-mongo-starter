@@ -2,6 +2,14 @@ function clearErrors() {
   $( "#error-msg" ).empty();
 }
 
+function displayAuthError() {
+  if ( localStorage.authError ) {
+    $( "#error-msg" ).append( localStorage.authError );
+    $( "#error-msg" ).show();
+    localStorage.removeItem( "authError" );
+  }
+}
+
 function watchLoginForm() {
   $( "#login-form" ).on( "submit", ( event ) => {
     event.preventDefault();
@@ -34,6 +42,8 @@ function watchLoginForm() {
 
 function handleLoginPage() {
   $( "#error-msg" ).hide();
+  clearErrors();
+  displayAuthError();
   watchLoginForm();
 }
 

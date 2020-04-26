@@ -10,7 +10,6 @@ const router = express.Router();
 
 // Post to register a new user
 router.post('/', (req, res) => {
-  // console.log(req.body)
   const { email, password } = req.body;
   return User.find({ email })
   // DeprecationWarning: collection.count is deprecated, and will be removed in a future version.
@@ -30,17 +29,15 @@ router.post('/', (req, res) => {
       // If there is no existing user, hash the password
       return User.hashPassword(password);
     })
-    .then((hash) => {
-      return User.create({ email, password: hash });
-    })
+    .then((hash) => User.create({ email, password: hash }))
     .then((user) => res.status(201).json(user.serialize()))
-    .catch(err => {
+    .catch((err) => {
       // Forward validation errors on to the client, otherwise give a 500
       // error because something unexpected has happened
       if (err.reason === 'ValidationError') {
         return res.status(err.code).json(err);
       }
-      res.status(500).json({code: 500, message: 'Internal server error'});
+      res.status(500).json({ code: 500, message: 'Internal server error' });
     });
 });
 
