@@ -31,7 +31,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 router.get('/currentUser', jwtAuth, (req, res) => {
   User.findById(req.user.id)
     .then((user) => {
-      res.json(user.serialize());
+      return res.json(user.serialize());
     })
     .catch((err) => {
       console.error(err);
