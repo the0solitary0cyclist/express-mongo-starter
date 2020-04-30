@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 
 app.use(express.static('public'));
 
-// Authentication 
+// Authentication
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 

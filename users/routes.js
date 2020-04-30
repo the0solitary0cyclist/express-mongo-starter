@@ -2,7 +2,7 @@
 /* eslint prefer-promise-reject-errors: 0 */ // --> OFF
 
 const express = require('express');
-
+const passport = require('passport');
 const { User } = require('./models');
 
 const router = express.Router();
@@ -38,6 +38,21 @@ router.post('/', (req, res) => {
         return res.status(err.code).json(err);
       }
       res.status(500).json({ code: 500, message: 'Internal server error' });
+    });
+});
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+router.get('/:id', jwtAuth, (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      res.json(user.serialize());
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        message: 'Internal server error.',
+      });
     });
 });
 
