@@ -18,6 +18,7 @@ const login = (req, res) => {
 
 const refreshToken = (req, res) => {
   const authToken = createAuthToken(req.user);
+  // const authToken = createAuthToken(req.user.serialize());
   res.json({
     authToken
   });
