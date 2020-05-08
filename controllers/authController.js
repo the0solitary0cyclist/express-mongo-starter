@@ -11,4 +11,16 @@ const createAuthToken = function(user) {
   });
 };
 
-module.exports = { createAuthToken };
+const login = (req, res) => {
+  const authToken = createAuthToken(req.user.serialize());
+  res.json({ success: true, authToken, ...req.user.serialize() });
+}
+
+const refreshToken = (req, res) => {
+  const authToken = createAuthToken(req.user);
+  res.json({
+    authToken
+  });
+}
+
+module.exports = { createAuthToken, login, refreshToken };

@@ -32,7 +32,7 @@ function watchLoginForm() {
         console.log(data)
         if ( data.success ) {
           localStorage.authToken = data.authToken;
-          localStorage.userId = data.user.id;
+          localStorage.userId = data.id;
           window.location = "profile.html";
         } else {
           $( "#error-msg" ).show();

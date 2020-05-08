@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/:id', jwtAuth, (req, res) => {
-  User.findById(req.params.id)
+  return User.findById(req.params.id)
     .then((user) => {
       res.json(user.serialize());
     })
