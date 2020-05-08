@@ -29,8 +29,10 @@ function watchLoginForm() {
 
       .then( ( res ) => res.json() )
       .then( ( data ) => {
+        console.log(data)
         if ( data.success ) {
           localStorage.authToken = data.authToken;
+          localStorage.userId = data.user.id;
           window.location = "profile.html";
         } else {
           $( "#error-msg" ).show();

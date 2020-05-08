@@ -10,7 +10,7 @@ function handleCurrentUserData( data ) {
 }
 
 function fetchCurrentUser() {
-  fetch( "/api/auth/currentUser", {
+  fetch( `/api/users/${localStorage.userId}`, {
     method: "Get",
     headers: {
       "Content-Type": "application/json",

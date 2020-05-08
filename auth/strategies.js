@@ -34,6 +34,7 @@ const localStrategy = new LocalStrategy({
     .catch((err) => callback(err, false));
 });
 
+console.log('JWT', JWT_SECRET)
 const jwtStrategy = new JwtStrategy(
   {
     secretOrKey: JWT_SECRET,
