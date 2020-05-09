@@ -14,14 +14,14 @@ const createAuthToken = function(user) {
 const login = (req, res) => {
   const authToken = createAuthToken(req.user.serialize());
   res.json({ success: true, authToken, ...req.user.serialize() });
-}
+};
 
 const refreshToken = (req, res) => {
   const authToken = createAuthToken(req.user);
   // const authToken = createAuthToken(req.user.serialize());
   res.json({
-    authToken
+    authToken,
   });
-}
+};
 
 module.exports = { createAuthToken, login, refreshToken };

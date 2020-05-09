@@ -26,6 +26,8 @@ function watchRegisterForm() {
         if ( data.reason == "ValidationError" ) {
           $( "#error-msg" ).show();
           $( "#error-msg" ).append( data.message );
+        } else if ( data.success == true ) {
+          window.location = "/checkemail.html";
         } else {
           window.location = "/";
         }

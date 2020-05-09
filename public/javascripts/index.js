@@ -29,7 +29,7 @@ function watchLoginForm() {
 
       .then( ( res ) => res.json() )
       .then( ( data ) => {
-        console.log(data)
+        console.log( data );
         if ( data.success ) {
           localStorage.authToken = data.authToken;
           localStorage.userId = data.id;

@@ -21,3 +21,5 @@ db.users.update({_id:ObjectId("5ea357c04c568f91dfa5a9e6")}, {$set: {"password":"
 
 validate password will only take a hashed password
 
+
+var debug = require('debug')('app:router:route');

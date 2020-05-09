@@ -18,11 +18,13 @@ const { localStrategy, jwtStrategy } = require('./auth/strategies');
 passport.use(localStrategy, jwtStrategy);
 const { router: authRouter } = require('./auth/routes');
 const { router: usersRouter } = require('./users/routes');
+const { router: verificationTokensRouter } = require('./verificationTokens/routes');
 
 const mongooseOptions = { // fight deprecations
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false
 };
 
 // CORS
@@ -45,6 +47,7 @@ passport.use(jwtStrategy);
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/verify', verificationTokensRouter);
 
 app.use('*', (req, res) => res.status(404).json({ message: 'Not Found' }));
 

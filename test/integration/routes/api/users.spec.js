@@ -2,7 +2,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
-const { createAuthToken } = require('../../../../controllers/authController')
+const { createAuthToken } = require('../../../../auth/controllers');
 
 const { expect } = chai;
 
@@ -25,85 +25,83 @@ describe('Users', function() {
   });
 
   beforeEach(function() {
-    return User.hashPassword(password).then((password) => {
-      return User.create({ email, password }).then((user) => {
-        createdUser = user
-      })
-    });
+    return User.hashPassword(password).then((password) => User.create({ email, password }).then((user) => {
+      createdUser = user;
+    }));
   });
   afterEach(function() {
-    return User.deleteMany({})
+    return User.deleteMany({});
   });
 
-  describe('/api/users', function(){
-    const validEmail = 'newUser@email.com'
-    const validPassword = 'Hello#123å'
+  describe('/api/users', function() {
+    const validEmail = 'newUser@email.com';
+    const validPassword = 'Hello#123å';
 
-    it('should create a new user with registration details', function(){
+    it('should create a new user with registration details', function() {
       return chai.request(app)
-      .post('/api/users')
-      .send({
-        email: validEmail,
-        password: validPassword,
-        confirmPassword: validPassword
-      })
-      .then((res) => {
-        expect(res.status).to.eql(201)
-        expect(res.body).to.have.property('email')
-        expect(res.body).to.have.property('id')
-        expect(res.body).not.to.have.property('_id')
-        expect(res.body).not.to.have.property('password')
-      })
-    })
+        .post('/api/users')
+        .send({
+          email: validEmail,
+          password: validPassword,
+          confirmPassword: validPassword,
+        })
+        .then((res) => {
+          expect(res.status).to.eql(201);
+          expect(res.body).to.have.property('email');
+          expect(res.body).to.have.property('id');
+          expect(res.body).not.to.have.property('_id');
+          expect(res.body).not.to.have.property('password');
+        });
+    });
 
-    it('should not create a new user for an existing email', function(){
+    it('should not create a new user for an existing email', function() {
       return chai.request(app)
-      .post('/api/users')
-      .send({
-        email: createdUser.email,
-        password: password,
-        confirmPassword: password
-      })
-      .then((res) => {
-        expect(res.status).to.eql(422)
-        console.log(res.error) // text: '{"code":422,"reason":"ValidationError","message":"Email already registered. Log in?","location":"email"}',
-      })
-    })
+        .post('/api/users')
+        .send({
+          email: createdUser.email,
+          password,
+          confirmPassword: password,
+        })
+        .then((res) => {
+          expect(res.status).to.eql(422);
+          console.log(res.error); // text: '{"code":422,"reason":"ValidationError","message":"Email already registered. Log in?","location":"email"}',
+        });
+    });
 
-    xit('should not create a new user when passwords do not match', function(){
+    xit('should not create a new user when passwords do not match', function() {
       return chai.request(app)
-      .post('/api/users')
-      .send({
-        email: validEmail,
-        password: validPassword,
-        confirmPassword: 'notTheValidPassword'
-      })
-      .then((res) => {
-        expect(res.status).to.eql(201)
-        expect(res.body).to.have.property('email')
-        expect(res.body).to.have.property('id')
-        expect(res.body).not.to.have.property('_id')
-        expect(res.body).not.to.have.property('password')
-      })
-    })
+        .post('/api/users')
+        .send({
+          email: validEmail,
+          password: validPassword,
+          confirmPassword: 'notTheValidPassword',
+        })
+        .then((res) => {
+          expect(res.status).to.eql(201);
+          expect(res.body).to.have.property('email');
+          expect(res.body).to.have.property('id');
+          expect(res.body).not.to.have.property('_id');
+          expect(res.body).not.to.have.property('password');
+        });
+    });
 
-    xit('should not create a new user when email is missing', function(){
+    xit('should not create a new user when email is missing', function() {
       return chai.request(app)
-      .post('/api/users')
-      .send({
-        email: 'validEmail',
-        password: validPassword,
-        confirmPassword: validPassword
-      })
-      .then((res) => {
-        expect(res.status).to.eql(201)
-        expect(res.body).to.have.property('email')
-        expect(res.body).to.have.property('id')
-        expect(res.body).not.to.have.property('_id')
-        expect(res.body).not.to.have.property('password')
-      })
-    })
-  })
+        .post('/api/users')
+        .send({
+          email: 'validEmail',
+          password: validPassword,
+          confirmPassword: validPassword,
+        })
+        .then((res) => {
+          expect(res.status).to.eql(201);
+          expect(res.body).to.have.property('email');
+          expect(res.body).to.have.property('id');
+          expect(res.body).not.to.have.property('_id');
+          expect(res.body).not.to.have.property('password');
+        });
+    });
+  });
 
   describe('api/users/:id', function() {
     it('should reject requests with no credentials', function() {
@@ -156,15 +154,15 @@ describe('Users', function() {
           expect(res).to.have.status(401);
         });
     });
-    
-    it('should send protected data with a valid token', function () {
-      const token = createAuthToken(createdUser)
+
+    it('should send protected data with a valid token', function() {
+      const token = createAuthToken(createdUser);
 
       return chai
         .request(app)
         .get(`/api/users/${createdUser._id}`)
         .set('authorization', `bearer ${token}`)
-        .then(res => {
+        .then((res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
         });

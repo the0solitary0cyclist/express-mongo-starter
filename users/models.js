@@ -13,11 +13,15 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  isVerified: {
+    type: Boolean,
+    default: 'false',
+  },
 });
 
 UserSchema.methods.serialize = function() {
   return {
-    email: this.email || '',
+    email: this.email,
     id: this._id,
   };
 };

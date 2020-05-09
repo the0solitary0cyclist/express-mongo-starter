@@ -22,6 +22,9 @@ const localStrategy = new LocalStrategy({
         // no, do not add a catch here because if you do it will proceed to .then
         // and then for all bad creds you get TWO error messages
       }
+      if (!user.isVerified) {
+        return Promise.reject(new Error('Please check your email and verify your account before logging in.'));
+      }
 
       return user.validatePassword(password);
     })
@@ -34,7 +37,7 @@ const localStrategy = new LocalStrategy({
     .catch((err) => callback(err, false));
 });
 
-console.log('JWT', JWT_SECRET)
+console.log('JWT', JWT_SECRET);
 const jwtStrategy = new JwtStrategy(
   {
     secretOrKey: JWT_SECRET,

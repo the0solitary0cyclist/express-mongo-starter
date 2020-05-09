@@ -24,90 +24,88 @@ describe('Auth', function() {
   });
 
   beforeEach(function() {
-    return User.hashPassword(password).then((password) => {
-      return User.create({ email, password }).then((user) => {
-        createdUser = user
-      })
-    });
+    return User.hashPassword(password).then((password) => User.create({ email, password }).then((user) => {
+      createdUser = user;
+    }));
   });
   afterEach(function() {
-    return User.deleteMany({})
+    return User.deleteMany({});
   });
 
-  describe('/api/auth/login', function () {
-    it('should grant an auth token to a user with valid credentials', function () {
+  describe('/api/auth/login', function() {
+    it('should grant an auth token to a user with valid credentials', function() {
       return chai
         .request(app)
         .post('/api/auth/login')
         .send({
-          email, password
+          email, password,
         })
         .then((res) => {
           expect(res).to.have.status(200);
-          expect(res.body).to.be.an('object')
-          expect(res.body).to.have.property('success')
-          expect(res.body).to.have.property('authToken')
-          expect(res.body).to.have.property('email')
-          expect(res.body).to.have.property('id')
-          expect(res.body).not.to.have.property('_id')
-          expect(res.body).not.to.have.property('password')
-          expect(res.body.email).to.eq(email)
-          expect(res.body.success).to.eq(true)
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('success');
+          expect(res.body).to.have.property('authToken');
+          expect(res.body).to.have.property('email');
+          expect(res.body).to.have.property('id');
+          expect(res.body).not.to.have.property('_id');
+          expect(res.body).not.to.have.property('password');
+          expect(res.body.email).to.eq(email);
+          expect(res.body.success).to.eq(true);
           expect(res.body.id).to.exist; // character length?
         });
     });
-    it('should error for a user with a bad password', function () {
+    it('should error for a user with a bad password', function() {
       return chai
         .request(app)
         .post('/api/auth/login')
         .send({
-          email, password: 'badPassword'
+          email, password: 'badPassword',
         })
         .then((res) => {
           expect(res).to.have.status(422);
-          console.log(res.error) // text: '{"success":false,"message":"Incorrect password."}',s
+          console.log(res.error); // text: '{"success":false,"message":"Incorrect password."}',s
         });
     });
-    it('should error for a user with an unknown email', function () {
+    it('should error for a user with an unknown email', function() {
       return chai
         .request(app)
         .post('/api/auth/login')
         .send({
-          email: 'unknownEmail', password
+          email: 'unknownEmail', password,
         })
         .then((res) => {
           expect(res).to.have.status(422);
-          console.log(res.error) // text: '{"success":false,"message":"Email not found. Please register."}'
+          console.log(res.error); // text: '{"success":false,"message":"Email not found. Please register."}'
         });
     });
-    xit('should error for a user who does not provide an email', function () {
+    xit('should error for a user who does not provide an email', function() {
       return chai
         .request(app)
         .post('/api/auth/login')
         .send({
-          email: '', password
+          email: '', password,
         })
         .then((res) => {
           expect(res).to.have.status(422); // currently 500
-          console.log(res.error) 
+          console.log(res.error);
         });
     });
-    xit('should error for a user who does not provide a password', function () {
+    xit('should error for a user who does not provide a password', function() {
       return chai
         .request(app)
         .post('/api/auth/login')
         .send({
-          email: '', password
+          email: '', password,
         })
         .then((res) => {
           expect(res).to.have.status(422); // currently 500
-          console.log(res.error)
+          console.log(res.error);
         });
     });
   });
 
-  describe('/api/auth/refresh', function () {
-    it('should reject requests with no credentials', function () {
+  describe('/api/auth/refresh', function() {
+    it('should reject requests with no credentials', function() {
       return chai
         .request(app)
         .post('/api/auth/refresh')
@@ -115,18 +113,18 @@ describe('Auth', function() {
           expect(res).to.have.status(401);
         });
     });
-    it('should reject requests with an invalid token', function () {
+    it('should reject requests with an invalid token', function() {
       const token = jwt.sign(
         {
           user: {
-            email
-          }
+            email,
+          },
         },
         'wrongSecret',
         {
           algorithm: 'HS256',
-          expiresIn: '7d'
-        }
+          expiresIn: '7d',
+        },
       );
 
       return chai
@@ -137,19 +135,19 @@ describe('Auth', function() {
           expect(res).to.have.status(401);
         });
     });
-    it('should reject requests with an expired token', function () {
+    it('should reject requests with an expired token', function() {
       const token = jwt.sign(
         {
           user: {
-            email
+            email,
           },
         },
         JWT_SECRET,
         {
           algorithm: 'HS256',
           subject: email,
-          expiresIn: -10 // Expired 100 seconds ago
-        }
+          expiresIn: -10, // Expired 100 seconds ago
+        },
       );
 
       return chai
@@ -160,19 +158,19 @@ describe('Auth', function() {
           expect(res).to.have.status(401);
         });
     });
-    it('should return a valid auth token with a newer expiry date', function () {
+    it('should return a valid auth token with a newer expiry date', function() {
       const token = jwt.sign(
         {
           user: {
-            email
-          }
+            email,
+          },
         },
         JWT_SECRET,
         {
           algorithm: 'HS256',
           subject: email,
-          expiresIn: '7d'
-        }
+          expiresIn: '7d',
+        },
       );
       const decoded = jwt.decode(token);
 
@@ -180,16 +178,16 @@ describe('Auth', function() {
         .request(app)
         .post('/api/auth/refresh')
         .set('Authorization', `Bearer ${token}`)
-        .then(res => {
+        .then((res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
           const token = res.body.authToken;
           expect(token).to.be.a('string');
           const payload = jwt.verify(token, JWT_SECRET, {
-            algorithm: ['HS256']
+            algorithm: ['HS256'],
           });
           expect(payload.user).to.include.keys(
-            'email'
+            'email',
           );
           expect(payload.exp).to.be.at.least(decoded.exp);
         });
