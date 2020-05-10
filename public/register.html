@@ -16,14 +16,16 @@
   </script>
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="./css/index.css" rel="stylesheet" />
+
 </head>
 <header>
-  <h1>Express Mongo Starter</h1>
+  <h1 class="text-center">Express Mongo Starter</h1>
 </header>
 
 <body>
   <main class="container">
-    <h2>Register</h2>
+    <h2 class="text-center">Register</h2>
     <div id="error-msg" class="alert alert-danger" role="alert">
     </div>
     <form id="register-form">
@@ -39,11 +41,11 @@
         <label for="confirm-password">Confirm Password</label>
         <input name="confirm-password" type="password" class="form-control" id="confirm-password" autocomplete="confirm-password" placeholder="Enter password">
       </div>
-      <button type="submit" id="login-submit" class="btn btn-primary">Submit</button>
+      <div class="text-center">
+        <button type="submit" id="login-submit" class="btn btn-primary">Submit</button>
+      </div>
     </form>
-    <div>
-      <p>Already have an account? <a href="/">Log In.</a></p>
-    </div>
+      <p class="text-center">Already have an account? <a href="/">Log In.</a></p>
   </main>
 </body>
 <script src="javascripts/register.js" type="text/javascript" charset="utf-8"></script>

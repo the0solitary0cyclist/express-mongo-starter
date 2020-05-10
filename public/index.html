@@ -16,17 +16,18 @@
   </script>
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="./css/index.css" rel="stylesheet" />
 </head>
 <header>
-  <h1>Express Mongo Starter</h1>
+  <h1 class="text-center">Express Mongo Starter</h1>
 </header>
 
 <body>
   <main class="container">
-    <h2>Log In</h2>
+    <h2 class="text-center">Log In</h2>
     <div id="error-msg" class="alert alert-danger" role="alert">
     </div>
-    <form id="login-form">
+    <form id="login-form" >
       <div class="form-group">
         <label for="email">Email address</label>
         <input name="email" type="email" class="form-control" id="email" autocomplete="email" placeholder="Enter email" novalidate>
@@ -35,11 +36,11 @@
         <label for="password">Password</label>
         <input name="password" type="password" class="form-control" id="password" autocomplete="current-password" placeholder="Enter password">
       </div>
-      <button type="submit" id="login-submit" class="btn btn-primary">Submit</button>
+      <div class="text-center">
+        <button type="submit" id="login-submit" class="btn btn-primary">Submit</button>
+      </div>
     </form>
-    <div>
-      <p>Don't yet have an account? <a href="/register.html">Register.</a></p>
-    </div>
+      <p class="text-center">Don't yet have an account? <a href="/register.html">Register.</a></p>
   </main>
 </body>
 <script src="javascripts/index.js" type="text/javascript" charset="utf-8"></script>
