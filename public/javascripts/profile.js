@@ -28,8 +28,33 @@ function fetchCurrentUser() {
     .then( ( data ) => handleCurrentUserData( data ) );
 }
 
-function handleProfile() {
-  fetchCurrentUser();
+function deleteUserAccount() {
+  console.log(`/api/users/${localStorage.userId}`)
+  fetch( `/api/users/${localStorage.userId}`, {
+    method: "Delete"
+  } )
+    .then( ( response ) => {
+      if ( response.status == 204 ) {
+        localStorage.removeItem( "authToken" );
+        localStorage.removeItem( "userId" );
+        window.location = "deleted.html";
+      } 
+      // else {
+      //   return response.json();
+      // }
+    } )
 }
 
-$( handleProfile );
+function watchAccountDelete() {
+  $( "#deleteAccount" ).on( "click", ( event ) => {
+    event.preventDefault();
+    deleteUserAccount(); 
+  })
+}
+
+function handleProfilePage() {
+  fetchCurrentUser();
+  watchAccountDelete();
+}
+
+$( handleProfilePage );

@@ -24,7 +24,8 @@ describe('Auth', function() {
   });
 
   beforeEach(function() {
-    return User.hashPassword(password).then((password) => User.create({ email, password }).then((user) => {
+    // create this test user as verified
+    return User.hashPassword(password).then((password) => User.create({ email, password, isVerified:true }).then((user) => {
       createdUser = user;
     }));
   });
@@ -38,7 +39,7 @@ describe('Auth', function() {
         .request(app)
         .post('/api/auth/login')
         .send({
-          email, password,
+          email, password
         })
         .then((res) => {
           expect(res).to.have.status(200);

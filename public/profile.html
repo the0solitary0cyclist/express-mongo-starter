@@ -1,36 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Unprotected Page</title>
-  <!-- Caution: stylesheets are ordered -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
-
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<html>
+  <head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>  
 </head>
-<body> 
-  <header class = "header">
-    <nav class = "navbar navbar-dark bg-dark">
-        <h1><a class="navbar-brand" href="">Express Mongo Starter</a></h1>
-        <span><a class="nav-link" href="" id="logout">Log Out</a></span>
-    </nav>
-</header>   
-  <main class="container">
-    <h2>Profile</h2>
-    <p>The redirect upon login</p>
-    <p id="current-user-email"></p>
+  <body>
+    <header class = "header">
+      <nav class = "navbar navbar-dark bg-dark">
+          <h1><a class="navbar-brand" href="">Express Mongo Starter</a></h1>
+          <span><a class="nav-link" href="" id="logout">Log Out</a></span>
+      </nav>
+  </header>   
+    <main class="container">
+      <h2>Profile</h2>
+      <p>The redirect upon login</p>
+      <p id="current-user-email"></p>
 
+    <div class="text-center">
+      <!-- Modal Trigger) -->
+      <button type="submit" data-toggle="modal" data-target="#confirmDeleteModal" class="btn btn-danger">Delete Account</button>
+    </div>
+  
+  <!-- Modal HTML -->
+  <div id="confirmDeleteModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="icon-box">
+          </div>				
+          <h4 class="modal-title">Are you sure?</h4>	
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Do you really want to delete your account? All associated data will be lost. This process cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button id="deleteAccount" type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
   </main>
-</body>
-<script src="javascripts/profile.js" type="text/javascript" charset="utf-8"></script>
-<script src="javascripts/logout.js" type="text/javascript" charset="utf-8"></script>
+ </body>
+ <script src="javascripts/profile.js" type="text/javascript" charset="utf-8"></script>
+ <script src="javascripts/logout.js" type="text/javascript" charset="utf-8"></script>
 </html>

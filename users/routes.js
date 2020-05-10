@@ -52,7 +52,7 @@ router.post('/', (req, res) => {
     .then((hash) => User.create({ email, password: hash }))
     .then((user) => VerificationToken.create({ user: user._id }))
     .then((token) => sgMail.send(msg(req, token)))
-    .then(() => res.json({ success: true }))
+    .then(() => res.status(201).json({ success: true }))
     .catch((err) => {
       // Forward validation errors on to the client, otherwise give a 500
       // error because something unexpected has happened
@@ -66,15 +66,22 @@ router.post('/', (req, res) => {
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/:id', jwtAuth, (req, res) => User.findById(req.params.id)
-  .then((user) => {
-    res.json(user.serialize());
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).json({
-      message: 'Internal server error.',
-    });
-  }));
+.then((user) => {
+  res.json(user.serialize());
+})
+.catch((err) => {
+  console.error(err);
+  res.status(500).json({
+    message: 'Internal server error.',
+  });
+}));
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  return User.findOneAndDelete({_id: id})
+  .then(() => res.status(204).end())
+  .catch((err) => res.send(500, err))
+});
 
 // Never expose all your users like below in a prod application
 // we're just doing this so we have a quick way to see

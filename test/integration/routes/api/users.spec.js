@@ -33,7 +33,7 @@ describe('Users', function() {
     return User.deleteMany({});
   });
 
-  describe('/api/users', function() {
+  describe('POST /api/users', function() {
     const validEmail = 'newUser@email.com';
     const validPassword = 'Hello#123å';
 
@@ -47,10 +47,12 @@ describe('Users', function() {
         })
         .then((res) => {
           expect(res.status).to.eql(201);
-          expect(res.body).to.have.property('email');
-          expect(res.body).to.have.property('id');
-          expect(res.body).not.to.have.property('_id');
-          expect(res.body).not.to.have.property('password');
+          expect(res.body.success).to.eql(true)
+          // not sending back the user anymore, but leaving these here for a bit just in case
+          // expect(res.body).to.have.property('email');
+          // expect(res.body).to.have.property('id');
+          // expect(res.body).not.to.have.property('_id');
+          // expect(res.body).not.to.have.property('password');
         });
     });
 
@@ -103,7 +105,7 @@ describe('Users', function() {
     });
   });
 
-  describe('api/users/:id', function() {
+  describe('GET api/users/:id', function() {
     it('should reject requests with no credentials', function() {
       return chai.request(app)
         .get(`/api/users/${createdUser._id}`)
@@ -168,4 +170,14 @@ describe('Users', function() {
         });
     });
   });
+
+  describe('DELETE api/users/:id', function() {
+    it('should delete a user by id', function(){
+      return chai.request(app)
+      .delete(`/api/users/${createdUser._id}`)
+      .then((res) => {
+        expect(res).to.have.status(204);
+      });
+    })
+  })
 });
