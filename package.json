@@ -24,7 +24,7 @@
     "eslint-config-jquery": "^2.0.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-mocha": "^6.3.0",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "nyc": "^15.0.0",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0"
